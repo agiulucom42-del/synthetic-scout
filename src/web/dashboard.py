@@ -1,27 +1,80 @@
 import html
 import json
+import os
 from pathlib import Path
+from typing import Dict
 
-from flask import Flask, Response, jsonify
+import requests
+from flask import Flask, Response, jsonify, request
 
 app = Flask(__name__)
 
 
 def load_summary():
-    summary_path = Path("reports/summary.json")
-    if not summary_path.exists():
-        return None
+  """Load summary data from remote URL or local file."""
+  remote_url = os.environ.get("SUMMARY_SOURCE_URL")
+  if remote_url:
     try:
-        return json.loads(summary_path.read_text(encoding="utf-8"))
-    except Exception:  # noqa: BLE001 - resilient dashboard
-        return None
+      timeout = float(os.environ.get("SUMMARY_REQUEST_TIMEOUT", "5"))
+      response = requests.get(remote_url, timeout=timeout)
+      response.raise_for_status()
+      return response.json()
+    except Exception:  # noqa: BLE001 - best-effort remote fetch
+      pass
+
+  summary_path = Path("reports/summary.json")
+  if not summary_path.exists():
+    return None
+  try:
+    return json.loads(summary_path.read_text(encoding="utf-8"))
+  except Exception:  # noqa: BLE001 - resilient dashboard
+    return None
+
+
+def _parse_allowed_users() -> Dict[str, str]:
+  raw = os.environ.get("DASHBOARD_USERS", "")
+  users: Dict[str, str] = {}
+  for chunk in raw.split(","):
+    if not chunk.strip() or ":" not in chunk:
+      continue
+    username, password = chunk.split(":", 1)
+    username = username.strip()
+    password = password.strip()
+    if username and password:
+      users[username] = password
+  demo_user = os.environ.get("DASHBOARD_DEMO_USER")
+  demo_pass = os.environ.get("DASHBOARD_DEMO_PASS")
+  if not users and demo_user and demo_pass:
+    users[demo_user] = demo_pass
+  return users
+
+
+def _require_authentication():
+  users = _parse_allowed_users()
+  if not users:
+    return Response("Dashboard credentials not configured", status=503)
+  auth = request.authorization
+  if not auth or users.get(auth.username) != auth.password:
+    return Response(
+      "Unauthorized",
+      status=401,
+      headers={"WWW-Authenticate": 'Basic realm="ULU QA EVOLVER Dashboard"'},
+    )
+  return None
+
+
+@app.before_request
+def _before_request():
+  unauthorized = _require_authentication()
+  if unauthorized is not None:
+    return unauthorized
 
 
 @app.get("/api/summary")
 def api_summary():
     summary = load_summary()
     if summary is None:
-        return jsonify({"error": "summary.json bulunamadý, önce testleri çalýþtýrýn."}), 404
+        return jsonify({"error": "summary.json bulunamadï¿½, ï¿½nce testleri ï¿½alï¿½ï¿½tï¿½rï¿½n."}), 404
     return jsonify(summary)
 
 
@@ -29,7 +82,7 @@ def api_summary():
 def index():
     summary = load_summary()
     if summary is None:
-        body = "<h1>ULU QA EVOLVER Dashboard</h1><p>Henüz rapor bulunamadý. Lütfen önce testleri çalýþtýrýn.</p>"
+        body = "<h1>ULU QA EVOLVER Dashboard</h1><p>Henï¿½z rapor bulunamadï¿½. Lï¿½tfen ï¿½nce testleri ï¿½alï¿½ï¿½tï¿½rï¿½n.</p>"
         return Response(body, mimetype="text/html")
 
     rows = []

@@ -15,10 +15,11 @@ RUN pip install --no-cache-dir --upgrade pip \
 COPY src ./src
 COPY tests ./tests
 COPY plugins ./plugins
+COPY reports ./reports
 COPY main.py ./
 
 RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["python", "main.py"]
+CMD ["python", "src/web/dashboard.py"]

@@ -1,0 +1,33 @@
+{
+  "env": "beta",
+  "base_api_url": "https://api.example.com",
+  "total": 3,
+  "passed": 2,
+  "failed": 1,
+  "error": 0,
+  "anomaly_count": 0,
+  "total_duration_ms": 271.34,
+  "results": [
+    {
+      "name": "auth_tests::test_login",
+      "status": "PASSED",
+      "duration_ms": 95.12,
+      "tags": ["smoke", "auth"],
+      "details": "Login succeeded"
+    },
+    {
+      "name": "content_tests::test_feed_response",
+      "status": "FAILED",
+      "duration_ms": 130.55,
+      "tags": ["api", "content"],
+      "details": "Unexpected 500 - investigating"
+    },
+    {
+      "name": "ssl_tests::test_tls_config",
+      "status": "PASSED",
+      "duration_ms": 45.67,
+      "tags": ["ssl"],
+      "details": "Certificates valid"
+    }
+  ]
+}
