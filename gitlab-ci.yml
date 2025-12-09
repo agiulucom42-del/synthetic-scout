@@ -1,0 +1,15 @@
+stages:
+  - test
+
+qa:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - cd it-tester || cd .
+    - pip install --no-cache-dir -r requirements.txt
+    - python main.py --format all
+  artifacts:
+    when: always
+    paths:
+      - it-tester/reports/
+      - reports/
