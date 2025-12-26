@@ -28,6 +28,9 @@ htmlcov/
 .vscode/
 .idea/
 
+# Generated reports
+reports/
+
 # System files
 .DS_Store
 Thumbs.db

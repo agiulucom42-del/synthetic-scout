@@ -97,7 +97,7 @@ def run_tests(tests: List[TestCase], max_workers: int, plugins: List[Plugin]) ->
 
 
 def parse_args(argv: List[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="ULU QA EVOLVER V8 – IT Tester Motoru")
+    parser = argparse.ArgumentParser(description="Synthetic Scout")
     parser.add_argument("--list", action="store_true", help="Testleri listele ve çık")
     parser.add_argument(
         "--tag",

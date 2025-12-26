@@ -7,7 +7,7 @@ Synthetic Scout, API/servis sağlık kontrollerini, SSL sertifika takibini, içe
 - SSL sertifika bitiş süresi kontrolü
 - İçerikte keyword doğrulaması
 - TCP tabanlı DB ping (PostgreSQL, Redis vb.)
-- Slack ve Telegram için webhook bildirim plugin'leri
+- Slack ve Telegram için webhook bildirim plugin’leri
 - Fake/real API seçimli HTTP istemcisi (env ile kontrol edilir)
 
 ## Hızlı Başlangıç
@@ -65,35 +65,4 @@ python -m web.dashboard
 - `plugins/telegram_plugin.py`
 
 ## Dağıtım Önerisi
-Railway/Render gibi Docker destekli platformlara `Dockerfile` ile deploy edebilirsin. Environment değişkenlerini platformun secrets bölümüne eklemeyi unutma.# ULU QA EVOLVER V8 – IT Tester Motoru
-
-Bu proje, setup_v8.py scripti ile oluşturulmuş modüler bir QA / IT Tester test motorudur.
-
-## Çalıştır
-
-bash
-cd it-tester
-pip install -r requirements.txt
-python main.py --format all
-
-
-Tag bazlı:
-
-bash
-python main.py --tag smoke --format html
-
-
-Dashboard:
-
-bash
-python main.py --format all
-python -m web.dashboard
-
-
-Docker:
-
-bash
-docker build -t it-tester .
-docker run --rm it-tester
-
-Plugin eklemek için plugins/ altında yeni bir dosya açıp get_plugin() fonksiyonu döndüren bir Plugin sınıfı tanımlayın.
+Railway/Render gibi Docker destekli platformlara `Dockerfile` ile deploy edebilirsin. Environment değişkenlerini platformun secrets bölümüne eklemeyi unutma.

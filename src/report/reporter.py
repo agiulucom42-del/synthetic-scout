@@ -83,12 +83,12 @@ class Reporter:
 
         lines: List[str] = [
             '<?xml version="1.0" encoding="UTF-8"?>',
-            f'<testsuite name="it-tester" tests="{total}" failures="{failures}" errors="{errors}" skipped="{skipped}" time="{total_time_s:.3f}">',
+            f'<testsuite name="synthetic-scout" tests="{total}" failures="{failures}" errors="{errors}" skipped="{skipped}" time="{total_time_s:.3f}">',
         ]
 
         for result in self.results:
             duration_s = (result.duration_ms or 0.0) / 1000.0
-            lines.append(f'  <testcase classname="it_tester" name="{result.name}" time="{duration_s:.3f}">')
+            lines.append(f'  <testcase classname="synthetic_scout" name="{result.name}" time="{duration_s:.3f}">')
             if result.status == "FAILED":
                 lines.append(f'    <failure message="FAILED"><![CDATA[{result.details}]]></failure>')
             elif result.status == "ERROR":
