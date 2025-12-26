@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "it-tester"
+name = "synthetic-scout"
 version = "0.2.0"
-description = "ULU QA EVOLVER V8 â€“ IT Tester Motoru"
+description = "Synthetic monitoring tool for API health checks, SSL validation, and more."
 authors = [{name = "ULU EVOLVER"}]
 readme = "README.md"
 requires-python = ">=3.9"
