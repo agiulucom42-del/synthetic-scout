@@ -19,5 +19,4 @@ eggs/
 .pytest_cache/
 .idea/
 .vscode/
-reports/
 logs/
